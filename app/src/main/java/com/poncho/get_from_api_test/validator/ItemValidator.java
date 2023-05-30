@@ -47,7 +47,6 @@ public class ItemValidator {
                         WebViewService.startWebView(activity.getWebView(),
                                 itemResponse.getUrl(),
                                 activity.getProgressBar());
-
                         activity.getWebView().setVisibility(View.VISIBLE);
                     });
                     break;
