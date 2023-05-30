@@ -1,0 +1,6 @@
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">demo3005513.mockable.io</domain>
+    </domain-config>
+</network-security-config>
