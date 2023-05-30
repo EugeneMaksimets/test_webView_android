@@ -24,11 +24,15 @@ public class ApiConnection {
     }
 
     public void getAllId(Callback callback) {
-        buildRequest(BASE_URL + GET_ALL_ID, callback);
+        HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(BASE_URL + GET_ALL_ID)).newBuilder();
+        String url = urlBuilder.build().toString();
+        buildRequest(url, callback);
     }
 
     public void getById(String id, Callback callback) {
-        buildRequest(BASE_URL + GET_BY_ID + id, callback);
+        HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(BASE_URL + GET_BY_ID + id)).newBuilder();
+        String url = urlBuilder.build().toString();
+        buildRequest(url, callback);
     }
 
     public static Gson getGson() {
@@ -36,10 +40,8 @@ public class ApiConnection {
     }
 
     private void buildRequest(String urlString, Callback callback) {
-        HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(urlString)).newBuilder();
-        String url = urlBuilder.build().toString();
         Request request = new Request.Builder()
-                .url(url)
+                .url(urlString)
                 .build();
         client.newCall(request).enqueue(callback);
     }
