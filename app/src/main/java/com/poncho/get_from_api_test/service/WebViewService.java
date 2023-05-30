@@ -37,7 +37,6 @@ public class WebViewService {
 
                     public void onPageFinished(WebView view, String url) {
                         progressBar.setVisibility(View.GONE);
-                        webView.setVisibility(View.VISIBLE);
                     }
 
                 });

@@ -21,6 +21,7 @@ public class ItemValidator {
             switch (itemResponse.getType()) {
                 case "text":
                     activity.runOnUiThread(() -> {
+                        activity.getProgressBar().setVisibility(View.GONE);
                         activity.getWebView().setVisibility(View.GONE);
                         activity.getImageView().setVisibility(View.GONE);
                         activity.getTextView().setVisibility(View.VISIBLE);
@@ -29,6 +30,7 @@ public class ItemValidator {
                     break;
                 case "image":
                     activity.runOnUiThread(() -> {
+                        activity.getProgressBar().setVisibility(View.GONE);
                         activity.getWebView().setVisibility(View.GONE);
                         activity.getTextView().setVisibility(View.GONE);
                         activity.getImageView().setVisibility(View.VISIBLE);
@@ -45,6 +47,8 @@ public class ItemValidator {
                         WebViewService.startWebView(activity.getWebView(),
                                 itemResponse.getUrl(),
                                 activity.getProgressBar());
+
+                        activity.getWebView().setVisibility(View.VISIBLE);
                     });
                     break;
                 default:
