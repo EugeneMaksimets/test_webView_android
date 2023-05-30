@@ -21,6 +21,7 @@ import com.poncho.get_from_api_test.validator.ItemValidator;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
+    private final String ERROR_CONNECT_MESSAGE = "Internet connection failure.\n Check your connection";
 
     private DataResponse savedDataResponse;
     private ApiService apiService;
@@ -50,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         deviceWidth = displayMetrics.widthPixels;
 
         itemValidator = new ItemValidator(MainActivity.this);
-
         apiService = new ApiService();
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -63,23 +63,32 @@ public class MainActivity extends AppCompatActivity {
         if (NetworkInfoService.isConnectedToInternet(MainActivity.this)) {
             apiService.getAllId(MainActivity.this);
         } else {
-            ItemResponse itemResponse = new ItemResponse();
-            itemResponse.setType("text");
-            itemResponse.setMessage("Internet connection failure.\n Check your connection");
-            itemValidator.validateType(itemResponse);
+            createErrorItem(ERROR_CONNECT_MESSAGE);
         }
 
     }
 
+    private void createErrorItem(String message) {
+        ItemResponse itemResponse = new ItemResponse();
+        itemResponse.setType("text");
+        itemResponse.setMessage(message);
+        itemValidator.validateType(itemResponse);
+    }
+
     public void getNextItem() {
-        listNumber++;
-        try {
-            getInfoFromAPI(savedDataResponse);
-        } catch (IndexOutOfBoundsException | NullPointerException e) {
-            Log.e(MainActivity.TAG, "index: " + listNumber, e);
-            listNumber = 0;
-            getIdsFromAPI();
+        if (NetworkInfoService.isConnectedToInternet(MainActivity.this)) {
+            listNumber++;
+            try {
+                getInfoFromAPI(savedDataResponse);
+            } catch (IndexOutOfBoundsException | NullPointerException e) {
+                Log.e(MainActivity.TAG, "index: " + listNumber, e);
+                listNumber = 0;
+                getIdsFromAPI();
+            }
+        } else {
+            createErrorItem(ERROR_CONNECT_MESSAGE);
         }
+
     }
 
     public void getIdsFromAPI() {
